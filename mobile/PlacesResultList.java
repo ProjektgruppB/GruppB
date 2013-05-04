@@ -1,4 +1,4 @@
-package mobile;
+package gruppB.mobile;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package mobile;
+package gruppB.mobile;
 
 import oracle.adfmf.json.JSONArray;
 
