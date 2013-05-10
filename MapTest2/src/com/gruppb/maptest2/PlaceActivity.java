@@ -3,10 +3,12 @@ package com.gruppb.maptest2;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
  
 public class PlaceActivity extends Activity {
@@ -104,6 +106,7 @@ public class PlaceActivity extends Activity {
                         if(status.equals("OK")){
                             if (placeDetails.result != null) {
                                 String name = placeDetails.result.name;
+                                String icon = placeDetails.result.icon;
                                 String address = placeDetails.result.formatted_address;
                                 String phone = placeDetails.result.formatted_phone_number;
                                 String latitude = Double.toString(placeDetails.result.geometry.location.lat);
@@ -112,20 +115,24 @@ public class PlaceActivity extends Activity {
                                 Log.d("Place ", name + address + phone + latitude + longitude);
                                  
                                 // Displaying all the details in the view
-                                // single_place.xml
+                                // place.xml
                                 TextView lbl_name = (TextView) findViewById(R.id.name);
                                 TextView lbl_address = (TextView) findViewById(R.id.address);
                                 TextView lbl_phone = (TextView) findViewById(R.id.phone);
                                 TextView lbl_location = (TextView) findViewById(R.id.location);
+                                ImageView lbl_icon = (ImageView) findViewById(R.id.icon);
                                  
                                 // Check for null data from google
                                 // Sometimes place details might missing
                                 name = name == null ? "Not present" : name; // if name is null display as "Not present"
+                                icon = icon == null ? "Not present" : icon;
                                 address = address == null ? "Not present" : address;
                                 phone = phone == null ? "Not present" : phone;
                                 latitude = latitude == null ? "Not present" : latitude;
                                 longitude = longitude == null ? "Not present" : longitude;
                                  
+                                
+                                lbl_icon.setImageURI(Uri.parse(icon));
                                 lbl_name.setText(name);
                                 lbl_address.setText(address);
                                 lbl_phone.setText(Html.fromHtml("<b>Phone:</b> " + phone));

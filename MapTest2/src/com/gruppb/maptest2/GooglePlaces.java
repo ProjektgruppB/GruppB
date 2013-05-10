@@ -73,8 +73,33 @@ public class GooglePlaces {
  
     /**
      * Searching single place full details
+     * @param query - test search query
+     *                 
+     * */
+    public PlacesList textSearch(String query) throws Exception {
+        try {
+ 
+            HttpRequestFactory httpRequestFactory = createRequestFactory(HTTP_TRANSPORT);
+            HttpRequest request = httpRequestFactory
+                    .buildGetRequest(new GenericUrl(PLACES_TEXT_SEARCH_URL));
+            request.getUrl().put("key", API_KEY);
+            request.getUrl().put("query", query);
+            request.getUrl().put("sensor", "false");
+ 
+            PlacesList place = request.execute().parseAs(PlacesList.class);
+             
+            return place;
+ 
+        } catch (HttpResponseException e) {
+            Log.e("Error in Perform Details", e.getMessage());
+            throw e;
+        }
+    }
+ 
+    /**
+     * Textsearch place
      * @param refrence - reference id of place
-     *                 - which you will get in search api request
+     *           - which you will get in search api request     
      * */
     public PlaceDetails getPlaceDetails(String reference) throws Exception {
         try {
@@ -95,7 +120,6 @@ public class GooglePlaces {
             throw e;
         }
     }
- 
     /**
      * Creating http request Factory
      * */

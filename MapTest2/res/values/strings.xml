@@ -8,5 +8,7 @@
     <string name="showmapbutton">Show Map</string>
     <string name="title_activity_places">PlacesActivity</string>
     <string name="title_activity_place">PlaceActivity</string>
+    <string name="title_activity_legal_notices">LegalNoticesActivity</string>
+    <string name="title_activity_testtstststs">TESTTSTSTSTS</string>
 
 </resources>

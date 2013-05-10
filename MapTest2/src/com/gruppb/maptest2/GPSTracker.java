@@ -192,6 +192,27 @@ public class GPSTracker extends Service implements LocationListener {
  
     @Override
     public void onProviderDisabled(String provider) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle("GPS is disabled");
+    	builder.setCancelable(false);
+    	builder.setPositiveButton("Enable GPS", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent startgps = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				
+			}
+		});
+    	builder.setNegativeButton("Leave GPS off", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+				
+			}
+		});
+    	AlertDialog alert = builder.create();
+    	alert.show();
     }
  
     @Override

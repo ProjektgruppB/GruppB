@@ -57,6 +57,14 @@
             android:name="com.gruppb.maptest2.PlaceActivity"
             android:label="@string/title_activity_place" >
         </activity>
+        <activity
+            android:name="com.gruppb.maptest2.LegalNoticesActivity"
+            android:label="@string/title_activity_legal_notices" >
+        </activity>
+        <activity
+            android:name="com.gruppb.maptest2.TESTTSTSTSTS"
+            android:label="@string/title_activity_testtstststs" >
+        </activity>
     </application>
 
 </manifest>
