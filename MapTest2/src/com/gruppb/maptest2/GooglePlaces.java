@@ -71,7 +71,7 @@ public class GooglePlaces {
  
     }
  
-    /**
+    /**Textsearch place
      * Searching single place full details
      * @param query - test search query
      *                 
@@ -97,7 +97,7 @@ public class GooglePlaces {
     }
  
     /**
-     * Textsearch place
+     * 
      * @param refrence - reference id of place
      *           - which you will get in search api request     
      * */

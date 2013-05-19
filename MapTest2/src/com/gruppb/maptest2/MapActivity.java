@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,6 +23,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -30,30 +33,30 @@ import android.widget.Toast;
 public class MapActivity extends FragmentActivity{
     
 	// Connection detector class
-    ConnectionDetector cd;
+    private ConnectionDetector cd;
     
     // Alert Dialog Manager
-    AlertDialogManager alert = new AlertDialogManager();
+    private AlertDialogManager alert = new AlertDialogManager();
     
     // Places List
-    PlacesList nearPlaces;
+    private PlacesList nearPlaces;
 
     // Google Places
-    GooglePlaces googlePlaces;
+    private GooglePlaces googlePlaces;
     
     // Progress dialog
-    ProgressDialog pDialog;
+    private ProgressDialog pDialog;
      
     // ListItems data
-    ArrayList<HashMap<String, String>> placesListItems = new ArrayList<HashMap<String,String>>();
-    HashMap<Marker,String> markReference = new HashMap<Marker,String>();
+    private ArrayList<HashMap<String, String>> placesListItems = new ArrayList<HashMap<String,String>>();
+    private HashMap<Marker,String> markReference = new HashMap<Marker,String>();
     
     // Map
-	GoogleMap googlemap;
+	private GoogleMap googlemap;
 	
 	// GPS Location
-	GPSTracker gpstracker;
-	LatLng mypos;
+	private GPSTracker gpstracker;
+	private LatLng mypos;
 	
     // KEY Strings
     public static String KEY_REFERENCE = "reference"; // id of the place
@@ -80,6 +83,27 @@ public class MapActivity extends FragmentActivity{
 		}
 		
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	
+	@Override 
+	public boolean onOptionsItemSelected(MenuItem item) {
+	      switch (item.getItemId()) {
+	          case R.id.action_Legalnotices:
+	        	  Intent intent = new Intent(MapActivity.this, LegalNoticesActivity.class);
+	  			  startActivity(intent);
+	              return true;
+
+	          default:
+	              return super.onOptionsItemSelected(item);
+	      }
+	  }
 
 	public void initMap(){
 		
@@ -87,12 +111,13 @@ public class MapActivity extends FragmentActivity{
         // check if GPS location can get
         if (gpstracker.canGetLocation()) {
         	
-        	new LoadPlaces().execute();
+        	new LoadPlaces(gpstracker.getLatitude(),gpstracker.getLongitude()).execute();
 	   		SupportMapFragment mapfragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 	   		googlemap = mapfragment.getMap();
-	   		googlemap.setMyLocationEnabled(true);
+	   		googlemap.setMyLocationEnabled(false);
 	   		googlemap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 	   		
+	   		//InfoWindow click listener
 	   		googlemap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener(){
 	   			
 	   			public void onInfoWindowClick(Marker marker) {
@@ -108,15 +133,30 @@ public class MapActivity extends FragmentActivity{
 	   			}
 
 	   		});
+	   		
+	   		//MapClicklistener
+	   		googlemap.setOnMapClickListener(new OnMapClickListener() {
+				
+				@Override
+				public void onMapClick(LatLng ll) {
+					new LoadPlaces(ll.latitude,ll.longitude).execute();
+				}
+			});
+	   		
+	   		try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	   		//Set camera
         	mypos = new LatLng(gpstracker.getLatitude(),gpstracker.getLongitude());
         	googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(mypos,(float)14.0));
         } else {
             // Can't get user's current location
-            /*alert.showAlertDialog(MapActivity.this, "GPS Status",
+            alert.showAlertDialog(MapActivity.this, "GPS Status",
                     "Couldn't get location information. Please enable GPS",
-                    false);*/
+                    false);
         	mypos = null;
-            // stop executing code by return
             
         }
         
@@ -127,7 +167,13 @@ public class MapActivity extends FragmentActivity{
      * */
     class LoadPlaces extends AsyncTask<String, String, String> {
  
-        /**
+    	private double Lat,Lng;
+        public LoadPlaces(double cLat, double cLng) {
+			Lat = cLat;
+			Lng = cLng;
+		}
+
+		/**
          * Before starting background thread Show Progress Dialog
          * */
         @Override
@@ -139,8 +185,8 @@ public class MapActivity extends FragmentActivity{
             pDialog.setCancelable(false);
             pDialog.show();
         }
- 
-        /**
+
+		/**
          * getting Places JSON
          * */
         protected String doInBackground(String... args) {
@@ -154,9 +200,11 @@ public class MapActivity extends FragmentActivity{
                 // Radius in meters - increase this value if you don't find any places
                 double radius = 1000; // 1000 meters 
                  
-                // get nearest places
-                nearPlaces = googlePlaces.search(gpstracker.getLatitude(),
-                        gpstracker.getLongitude(), radius, types);
+               
+                //Get Places	
+                nearPlaces = googlePlaces.search(Lat, Lng, radius, types);
+              
+                Log.w("Location:",String.valueOf(Lat) + String.valueOf(Lng));
                  
  
             } catch (Exception e) {
@@ -183,7 +231,6 @@ public class MapActivity extends FragmentActivity{
                     // Get json response status
                     String status = nearPlaces.status;
                     Marker marker;
-                    //LatLng temppos;
                      
                     // Check for all possible status
                     if(status.equals("OK")){
@@ -195,7 +242,7 @@ public class MapActivity extends FragmentActivity{
                                 marker = googlemap.addMarker(new MarkerOptions()
                                 .title(p.name)
                         		.snippet(p.vicinity)
-                        		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                        		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                         		.position(new LatLng(p.geometry.location.lat,p.geometry.location.lng))
                                 );
                                 markReference.put(marker, p.reference);
@@ -205,7 +252,7 @@ public class MapActivity extends FragmentActivity{
                     else if(status.equals("ZERO_RESULTS")){
                         // Zero results found
                         alert.showAlertDialog(MapActivity.this, "Near Places",
-                                "Sorry no places found. Try to change the types of places",
+                                "Sorry no places found.",
                                 false);
                     }
                     else if(status.equals("UNKNOWN_ERROR"))

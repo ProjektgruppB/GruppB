@@ -8,7 +8,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
  
 public class PlaceActivity extends Activity {
@@ -35,11 +39,28 @@ public class PlaceActivity extends Activity {
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place);
          
         Intent i = getIntent();
+        
+        Button reviewBtn = (Button) findViewById(R.id.newreview); 
+        TextView rateText = (TextView) findViewById(R.id.placeraterankTextView);
+        RatingBar rateRatingBar = (RatingBar) findViewById(R.id.placerateratingbar);
+        rateRatingBar.setEnabled(false);
+        rateRatingBar.setRating((float) 1.5);
+        //rateText.setVisibility(rateText.GONE);
+        //rateRatingBar.setVisibility(rateRatingBar.GONE);
+        reviewBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent myIntent = new Intent(v.getContext(), ReviewActivity.class);
+				myIntent.putExtra("place", placeDetails);
+				v.getContext().startActivity(myIntent);
+				
+			}
+		});
          
         // Place referece id
         String reference = i.getStringExtra(KEY_REFERENCE);

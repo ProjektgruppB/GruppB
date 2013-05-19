@@ -1,62 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dip">
-     
-    <!-- Icon -->
-    <ImageView 
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-    	android:adjustViewBounds="true"/>
-    
-    <!-- Name Label -->
-    <TextView
-        android:text="Name:"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="5dip"
-        android:textStyle="bold"/>
-     
-    <!--  Name Value -->
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-     
-    <!-- Address Label -->
-    <TextView
-        android:text="Address:"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dip"
-        android:layout_marginBottom="5dip"
-        android:textStyle="bold"/>
-     
-    <!--  Address Value -->
-    <TextView
-        android:id="@+id/address"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-     
-    <!-- Phone Number Label -->
-    <TextView
-        android:id="@+id/phone"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"/>
-     
-     
-    <!-- Location Value -->
-    <TextView
-        android:id="@+id/location"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dip"
-        android:layout_marginBottom="5dip"/>
- 
- 
-</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:padding="10dip">
+	     <!-- Reference Rating -->
+	    <TextView
+	        android:id="@+id/placeraterankTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="18dp"
+	        android:text="@string/servicerank" />
+        <RatingBar
+            android:id="@+id/placerateratingbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp" />
+        
+	    <!-- Icon -->
+	    <ImageView 
+	        android:id="@+id/icon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	    	android:adjustViewBounds="true"/>
+	    
+	    <!-- Name Label -->
+	    <TextView
+	        android:text="Name:"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dip"
+	        android:layout_marginBottom="5dip"
+	        android:textStyle="bold"/>
+	     
+	    <!--  Name Value -->
+	    <TextView
+	        android:id="@+id/name"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	     
+	    <!-- Address Label -->
+	    <TextView
+	        android:text="Address:"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="15dip"
+	        android:layout_marginBottom="5dip"
+	        android:textStyle="bold"/>
+	     
+	    <!--  Address Value -->
+	    <TextView
+	        android:id="@+id/address"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	     
+	    <!-- Phone Number Label -->
+	    <TextView
+	        android:id="@+id/phone"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dip"/>
+	     
+	     
+	    <!-- Location Value -->
+	    <TextView
+	        android:id="@+id/location"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="15dip"
+	        android:layout_marginBottom="5dip"/>
+	    
+	    <!-- Review Button -->
+	    <Button
+	        android:id="@+id/newreview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/newreviewbutton" 
+	        />
+	 
+	 
+	</LinearLayout>
+</ScrollView>
